@@ -1,0 +1,42 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never">
+
+        <menu>
+            <item
+                android:id="@+id/action_PhoneBook"
+                android:icon="@drawable/phone_book"
+                android:title="@string/text_phoneBook" />
+            <item
+                android:id="@+id/action_LookUpBook"
+                android:title="@string/text_lookUpNumsInBook"
+                android:icon="@drawable/icon_searchonphonebook"/>
+            <item
+                android:id="@+id/action_SearchOnWeb"
+                android:title="@string/text_searchOnTheWeb"
+                android:icon="@drawable/icon_searchonweb"/>
+
+            <item
+                android:id="@+id/action_vibration"
+                android:title="@string/text_vibration"
+                android:icon="@drawable/icon_vibration"/>
+            <item
+                android:id="@+id/action_Display"
+                android:title="@string/text_displaySettings"
+                android:icon="@drawable/icon_light"/>
+            <item
+                android:id="@+id/action_CustomButton"
+                android:title="@string/text_customButton"
+                android:icon="@drawable/icon_cat"/>
+        </menu>
+    </item>
+
+
+</menu>
+

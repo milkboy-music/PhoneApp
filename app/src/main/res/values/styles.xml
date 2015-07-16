@@ -1,0 +1,18 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/Orange500</item>
+        <item name="colorPrimaryDark">@color/Amber500</item>
+        <item name="android:textColorPrimary">@color/Pink_A200</item>
+
+    </style>
+
+    <style name="PopThemeStyle" parent="@style/ThemeOverlay.AppCompat.Light">
+        <!-- 文字色 -->
+        <item name="android:textColorPrimary">@android:color/white</item>
+
+        <!-- 背景色 -->
+        <item name="android:background">@color/Indigo500</item>
+    </style>
+</resources>

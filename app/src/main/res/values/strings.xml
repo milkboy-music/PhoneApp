@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">PhoneApp</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">設定</string>
+    <string name="text_mojicount">文字数</string>
+    <string name="text_phoneBook">電話帳</string>
+    <string name="text_lookUpNumsInBook">電話帳で検索</string>
+    <string name="text_vibration">振動(On/Off)</string>
+    <string name="text_searchOnTheWeb">ネットで検索</string>
+    <string name="text_displaySettings">画面の明るさ調整</string>
+    <string name="text_customButton">カスタムボタン</string>
+    <string name="text_message_ClearDone">クリアしました</string>
+</resources>
