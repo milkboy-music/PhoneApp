@@ -105,19 +105,20 @@ public class MainActivityFragment extends Fragment {
 
         });
         //数字ボタンを押したらエディットテキストに数字が入る実装
-        for(;;){
+
             View.OnClickListener button1= new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    editText.setText("*");
-
+                    for(;;) {
+                        editText.setText("*");
+                    }
                 }
             };
             getActivity().findViewById(R.id.imv1).setOnClickListener(button1);
         }
 
 
-    }
+
 
 
 
