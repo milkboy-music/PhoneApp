@@ -14,9 +14,9 @@
                 android:icon="@drawable/phone_book"
                 android:title="@string/text_phoneBook" />
             <item
-                android:id="@+id/action_LookUpBook"
-                android:title="@string/text_lookUpNumsInBook"
-                android:icon="@drawable/icon_searchonphonebook"/>
+                android:id="@+id/action_ResisterBook"
+                android:title="@string/text_resistNumOnBook"
+                android:icon="@drawable/phonebook_and_pen"/>
             <item
                 android:id="@+id/action_SearchOnWeb"
                 android:title="@string/text_searchOnTheWeb"
