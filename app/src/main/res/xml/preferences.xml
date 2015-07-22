@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="ボタンをかえる">
+        <CheckBoxPreference
+            android:key="preference_color_num"
+            android:summary="カラフルな数字のボタンに変化します ※アプリの再起動後に有効になります"
+            android:title="カラフルな数字">
+
+        </CheckBoxPreference>
+        <CheckBoxPreference
+            android:key="preference_eto"
+            android:summary="カラフルな数字のボタンに変化します ※アプリの再起動後に有効になります"
+            android:title="カラフルな数字">
+
+        </CheckBoxPreference>
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
