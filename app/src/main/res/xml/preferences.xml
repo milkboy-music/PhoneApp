@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="ボタンをかえる">
-        <CheckBoxPreference
-            android:key="preference_color_num"
-            android:summary="カラフルな数字のボタンに変化します ※アプリの再起動後に有効になります"
-            android:title="カラフルな数字">
+    <PreferenceCategory android:title="ボタンを蛙" >
 
-        </CheckBoxPreference>
         <CheckBoxPreference
+            android:icon="@drawable/icon_frog"
             android:key="preference_eto"
-            android:summary="カラフルな数字のボタンに変化します ※アプリの再起動後に有効になります"
-            android:title="カラフルな数字">
+            android:summary="干支(12支)のボタンに変化します ※数字ボタンに戻すには右側のチェックを外して、アプリの再起動が必要です"
+            android:title="EtoDe数字">
 
         </CheckBoxPreference>
+
+
     </PreferenceCategory>
 
 

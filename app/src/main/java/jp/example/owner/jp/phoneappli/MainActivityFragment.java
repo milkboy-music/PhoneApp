@@ -3,6 +3,7 @@ package jp.example.owner.jp.phoneappli;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -10,11 +11,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Vibrator;
+import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,9 +29,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,10 +55,13 @@ public class MainActivityFragment extends Fragment {
     List<Bitmap> listBitmap = new ArrayList();
     SharedPreferences sharedPreferences;
     boolean check_preference;//プリファレンス
-    Resources r;
-    Bitmap bitmap1;
-    //テストプリファレンス
-    ImageView img0;
+
+    //ディスプレイ明るさ
+    LayoutInflater inflater;
+    View layout;
+    SeekBar seek;
+    WindowManager.LayoutParams lp;
+    static int seekValue=10;
 
     public MainActivityFragment() {
     }
@@ -107,23 +117,31 @@ public class MainActivityFragment extends Fragment {
                     item.setChecked(true);
                     flag = true;
                     startVib();
-                    Toast.makeText(getActivity(), "アプリ再起動時には再設定が必要です", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "バイブレーションのON", Toast.LENGTH_SHORT).show();
                 } else if (item.isChecked() == true) {
                     item.setChecked(false);
                     flag = false;
                     stopVib();
+                    Toast.makeText(getActivity(), "バイブレーションをOFF", Toast.LENGTH_SHORT).show();
+
                 }
 
                 break;
             //画面の明るさ調整
             case R.id.action_Display:
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("yuyuyuyu").setView(layout);
+                builder.setNeutralButton("OK!", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt) {
+                    }
+                });
+                builder.show();
                 break;
             //オリジナルボタンの実装
             case R.id.action_CustomButton:
                 i = new Intent(getActivity(), PreferenceActivity.class);
 
-                startActivityForResult(i,0);
+                startActivityForResult(i, 0);
 
                 break;
         }
@@ -340,6 +358,13 @@ public class MainActivityFragment extends Fragment {
             }
         });
 
+        //ディスプレイの明るさ
+        inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layout = inflater.inflate(R.layout.layout_display, (ViewGroup) getActivity().findViewById(R.id.rl));
+        //シークバー
+onSeek();
+
+
 
         //preferenceManagerの使い方
         onC();
@@ -347,25 +372,82 @@ public class MainActivityFragment extends Fragment {
 
     }
 
+    private void onSeek() {//getwindow
+        SeekBar sb= (SeekBar) getActivity().findViewById(R.id.seekbar);
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                lp.screenBrightness=progress;
+            }
 
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
 
 
     public void onC() {
-SharedPreferences sharedPreferences=PreferenceManager.getDefaultSharedPreferences(getActivity());
-       boolean flag=sharedPreferences.getBoolean("preference_color_num",true);//android:key="preference_color_num"
-        img0 = (ImageView) getActivity().findViewById(R.id.imv0);
-        r = getResources();
-        bitmap1 = BitmapFactory.decodeResource(r, R.mipmap.bird);
-        listBitmap.add(bitmap1);
-        if(flag){
-            img0.setImageBitmap(bitmap1);
+        boolean flag;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        flag = sharedPreferences.getBoolean("preference_eto", true);//android:key="preference_color_num"
+
+
+        ImageView img0 = (ImageView) getActivity().findViewById(R.id.imv0);
+        ImageView img1 = (ImageView) getActivity().findViewById(R.id.imv1);
+        ImageView img2 = (ImageView) getActivity().findViewById(R.id.imv2);
+        ImageView img3 = (ImageView) getActivity().findViewById(R.id.imv3);
+        ImageView img4 = (ImageView) getActivity().findViewById(R.id.imv4);
+        ImageView img5 = (ImageView) getActivity().findViewById(R.id.imv5);
+        ImageView img6 = (ImageView) getActivity().findViewById(R.id.imv6);
+        ImageView img7 = (ImageView) getActivity().findViewById(R.id.imv7);
+        ImageView img8 = (ImageView) getActivity().findViewById(R.id.imv8);
+        ImageView img9 = (ImageView) getActivity().findViewById(R.id.imv9);
+        ImageView imgAsterisk = (ImageView) getActivity().findViewById(R.id.imvAsterisk);
+        ImageView imgSharp = (ImageView) getActivity().findViewById(R.id.imvSharp);
+
+        listBitmap.add(0, BitmapFactory.decodeResource(getResources(), R.mipmap.dog));
+        listBitmap.add(1, BitmapFactory.decodeResource(getResources(), R.mipmap.mouse));
+        listBitmap.add(2, BitmapFactory.decodeResource(getResources(), R.mipmap.cow));
+        listBitmap.add(3, BitmapFactory.decodeResource(getResources(), R.mipmap.tiger));
+        listBitmap.add(4, BitmapFactory.decodeResource(getResources(), R.mipmap.bunny));
+        listBitmap.add(5, BitmapFactory.decodeResource(getResources(), R.mipmap.dragon));
+        listBitmap.add(6, BitmapFactory.decodeResource(getResources(), R.mipmap.snake));
+        listBitmap.add(7, BitmapFactory.decodeResource(getResources(), R.mipmap.horse));
+        listBitmap.add(8, BitmapFactory.decodeResource(getResources(), R.mipmap.sheep));
+        listBitmap.add(9, BitmapFactory.decodeResource(getResources(), R.mipmap.monkey));
+        listBitmap.add(10, BitmapFactory.decodeResource(getResources(), R.mipmap.bird));
+        listBitmap.add(11, BitmapFactory.decodeResource(getResources(), R.mipmap.wildboar));
+
+
+        if (flag) {
+            img0.setImageBitmap(listBitmap.get(0));
+            img1.setImageBitmap(listBitmap.get(1));
+            img2.setImageBitmap(listBitmap.get(2));
+            img3.setImageBitmap(listBitmap.get(3));
+            img4.setImageBitmap(listBitmap.get(4));
+            img5.setImageBitmap(listBitmap.get(5));
+            img6.setImageBitmap(listBitmap.get(6));
+            img7.setImageBitmap(listBitmap.get(7));
+            img8.setImageBitmap(listBitmap.get(8));
+            img9.setImageBitmap(listBitmap.get(9));
+            imgAsterisk.setImageBitmap(listBitmap.get(10));
+            imgSharp.setImageBitmap(listBitmap.get(11));
+
 
         }
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
+        switch (requestCode) {
             case 0:
                 onC();
         }
