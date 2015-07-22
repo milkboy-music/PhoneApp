@@ -15,25 +15,26 @@
                 android:title="@string/text_phoneBook" />
             <item
                 android:id="@+id/action_ResisterBook"
-                android:title="@string/text_resistNumOnBook"
-                android:icon="@drawable/phonebook_and_pen"/>
+                android:icon="@drawable/phonebook_and_pen"
+                android:title="@string/text_resistNumOnBook" />
             <item
                 android:id="@+id/action_SearchOnWeb"
-                android:title="@string/text_searchOnTheWeb"
-                android:icon="@drawable/icon_searchonweb"/>
+                android:icon="@drawable/icon_searchonweb"
+                android:title="@string/text_searchOnTheWeb" />
 
             <item
                 android:id="@+id/action_vibration"
-                android:title="@string/text_vibration"
-                android:icon="@drawable/icon_vibration"/>
+                android:checkable="true"
+                android:icon="@drawable/icon_vibration"
+                android:title="@string/text_vibration" />
             <item
                 android:id="@+id/action_Display"
-                android:title="@string/text_displaySettings"
-                android:icon="@drawable/icon_light"/>
+                android:icon="@drawable/icon_light"
+                android:title="@string/text_displaySettings" />
             <item
                 android:id="@+id/action_CustomButton"
-                android:title="@string/text_customButton"
-                android:icon="@drawable/icon_cat"/>
+                android:icon="@drawable/icon_cat"
+                android:title="@string/text_customButton" />
         </menu>
     </item>
 

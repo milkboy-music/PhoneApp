@@ -1,13 +1,23 @@
 package jp.example.owner.jp.phoneappli;
 
+import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,10 +26,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -30,8 +42,20 @@ public class MainActivityFragment extends Fragment {
 
     private String[] number = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};//セットする値＋asterisk,sharp
 
+    boolean flag = false;//ヴァイブOn/Offのフラグ
+
+    //カスタムボタンのbitmap
+    List<Bitmap> listBitmap = new ArrayList();
+    SharedPreferences sharedPreferences;
+    boolean check_preference;//プリファレンス
+    Resources r;
+    Bitmap bitmap1;
+    //テストプリファレンス
+    ImageView img0;
+
     public MainActivityFragment() {
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,21 +91,65 @@ public class MainActivityFragment extends Fragment {
                 i.setType(ContactsContract.RawContacts.CONTENT_TYPE);
                 i.putExtra(ContactsContract.Intents.Insert.PHONE, editText.getText().toString());
                 startActivity(i);
-                // Creates a new Intent to insert a contact
-                //Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
-// Sets the MIME type to match the Contacts Provider
-                //intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
-                //intent.putExtra(ContactsContract.Intents.Insert.PHONETIC_NAME, editText.getText().toString());//電話帳に名前を登録する
-//startActivity(intent);
                 break;
-            case R.id.action_SearchOnWeb:
-                String url=String.format("%s",Uri.encode(editText.getText().toString()));
-                i = new Intent(Intent.ACTION_WEB_SEARCH,Uri.parse(url));
+
+            case R.id.action_SearchOnWeb://電話番号ネット検索
+                String url = editText.getText().toString();
+                i = new Intent(Intent.ACTION_WEB_SEARCH);
+                i.putExtra(SearchManager.QUERY, url);
                 startActivity(i);
+                break;
+            //バイブレーション
+            case R.id.action_vibration:
+
+                if (item.isChecked() == false) {
+
+                    item.setChecked(true);
+                    flag = true;
+                    startVib();
+                    Toast.makeText(getActivity(), "アプリ再起動時には再設定が必要です", Toast.LENGTH_SHORT).show();
+                } else if (item.isChecked() == true) {
+                    item.setChecked(false);
+                    flag = false;
+                    stopVib();
+                }
+
+                break;
+            //画面の明るさ調整
+            case R.id.action_Display:
+
+                break;
+            //オリジナルボタンの実装
+            case R.id.action_CustomButton:
+                i = new Intent(getActivity(), PreferenceActivity.class);
+
+                startActivityForResult(i,0);
+
                 break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startVib() {//バイブスタート
+        Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(80L);
+
+    }
+
+    private void stopVib() {//バイブストップ
+        Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.cancel();
+    }
+
+    public void setVib() {//バイブレーションの作動条件
+        if (flag == true) {
+            startVib();
+        } else if (flag) {
+            stopVib();
+
+        }
+
     }
 
     @Override
@@ -104,6 +172,8 @@ public class MainActivityFragment extends Fragment {
                 String co = getString(R.string.text_mojicount);
                 textView_count.setText(String.valueOf(txtLength) + co);
                 btn_delete.setVisibility(View.VISIBLE);
+                setVib();//バイブレーション
+
 
             }
 
@@ -120,8 +190,16 @@ public class MainActivityFragment extends Fragment {
                     //sharp=Uri.encode("#");
                     Uri numbers = Uri.parse(String.format("tel:%s", Uri.encode(editText.getText().toString())));//Uri.encodeで#の記号を変換!!
                     Intent i = new Intent(Intent.ACTION_DIAL, numbers);
+                    setVib();//バイブレーション
                     startActivity(i);
                     //# ♯ # ＃　♯
+                } else {
+
+                    Toast toast = Toast.makeText(getActivity(), "1つ以上入力して下さい", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER | Gravity.CENTER, 0, 0);
+                    toast.show();
+
+
                 }
 
             }
@@ -161,65 +239,86 @@ public class MainActivityFragment extends Fragment {
 
 
         });
+
         //数字ボタンを押したらエディットテキストに数字が入る実装(0~9とアスタリスクとシャープ)
         getActivity().findViewById(R.id.imv0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editText.append(number[0]);
+                setVib();
+
             }
         });
         getActivity().findViewById(R.id.imv1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editText.append(number[1]);
+                setVib();
+
             }
         });
         getActivity().findViewById(R.id.imv2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editText.append(number[2]);
+                setVib();
+
             }
         });
         getActivity().findViewById(R.id.imv3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editText.append(number[3]);
+                setVib();
+
             }
         });
         getActivity().findViewById(R.id.imv4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editText.append(number[4]);
+                setVib();
+
             }
         });
         getActivity().findViewById(R.id.imv5).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editText.append(number[5]);
+                setVib();
+
             }
         });
         getActivity().findViewById(R.id.imv6).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editText.append(number[6]);
+                setVib();
+
             }
         });
         getActivity().findViewById(R.id.imv7).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editText.append(number[7]);
+                setVib();
+
             }
         });
         getActivity().findViewById(R.id.imv8).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editText.append(number[8]);
+                setVib();
+
             }
         });
         getActivity().findViewById(R.id.imv9).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editText.append(number[9]);
+                setVib();
+
             }
         });
         getActivity().findViewById(R.id.imvAsterisk).setOnClickListener(new View.OnClickListener() {
@@ -227,17 +326,50 @@ public class MainActivityFragment extends Fragment {
             public void onClick(View v) {
                 String asterisk = "*";
                 editText.append(asterisk);
+                setVib();
+
             }
         });
         getActivity().findViewById(R.id.imvSharp).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editText.append("#");
+                setVib();
+
 
             }
         });
+
+
+        //preferenceManagerの使い方
+        onC();
+
+
     }
 
+
+
+
+    public void onC() {
+SharedPreferences sharedPreferences=PreferenceManager.getDefaultSharedPreferences(getActivity());
+       boolean flag=sharedPreferences.getBoolean("preference_color_num",true);//android:key="preference_color_num"
+        img0 = (ImageView) getActivity().findViewById(R.id.imv0);
+        r = getResources();
+        bitmap1 = BitmapFactory.decodeResource(r, R.mipmap.bird);
+        listBitmap.add(bitmap1);
+        if(flag){
+            img0.setImageBitmap(bitmap1);
+
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case 0:
+                onC();
+        }
+    }
 }
 
 
