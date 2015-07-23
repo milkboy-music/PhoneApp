@@ -61,15 +61,33 @@ public class MainActivityFragment extends Fragment {
     View layout;
     SeekBar seek;
     WindowManager.LayoutParams lp;
-    static int seekValue=10;
+    static int seekValue = 10;
+    private AlertDialog dialog;
+
 
     public MainActivityFragment() {
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+        //ディスプレイの明るさ
+        inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layout = inflater.inflate(R.layout.layout_display, (ViewGroup) getActivity().findViewById(R.id.rl));
+
+        //seekbar
+        seek = (SeekBar) layout.findViewById(R.id.seekbar);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //ディスプレイの明るさ
+        inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layout = inflater.inflate(R.layout.layout_display, container);
+
         //オプションメニューを有効にする
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_main_activity, container, false);
@@ -129,13 +147,18 @@ public class MainActivityFragment extends Fragment {
                 break;
             //画面の明るさ調整
             case R.id.action_Display:
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("yuyuyuyu").setView(layout);
-                builder.setNeutralButton("OK!", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt) {
-                    }
-                });
-                builder.show();
+                if (dialog == null) {
+                    dialog = new AlertDialog.Builder(getActivity()).
+
+                            setTitle("画面の明るさ調節").setView(layout).setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface paramAnonymousDialogInterface, int paramAnonymousInt) {
+                        }
+                    }).create();
+                }
+                    dialog.show();
+
+
+
                 break;
             //オリジナルボタンの実装
             case R.id.action_CustomButton:
@@ -358,12 +381,9 @@ public class MainActivityFragment extends Fragment {
             }
         });
 
-        //ディスプレイの明るさ
-        inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        layout = inflater.inflate(R.layout.layout_display, (ViewGroup) getActivity().findViewById(R.id.rl));
-        //シークバー
-onSeek();
 
+        //シークバー
+        onSeek();
 
 
         //preferenceManagerの使い方
@@ -372,12 +392,12 @@ onSeek();
 
     }
 
-    private void onSeek() {//getwindow
-        SeekBar sb= (SeekBar) getActivity().findViewById(R.id.seekbar);
-        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+    private void onSeek() {
+        seek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                lp.screenBrightness=progress;
+                //lp.screenBrightness=progress;
+                seek.setProgress(progress);
             }
 
             @Override
@@ -387,7 +407,10 @@ onSeek();
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                float f = seek.getProgress() / 100.0F;
+                lp = getActivity().getWindow().getAttributes();
+                lp.screenBrightness = f;
+                getActivity().getWindow().setAttributes(lp);
             }
         });
     }
